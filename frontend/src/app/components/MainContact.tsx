@@ -8,7 +8,7 @@ const dataMemory = {
 
 export default function MainContact() {
   return (
-    <div className="w-1/4 bg-gray-800 p-4 text-white w-full">
+    <div className="w-1/4 bg-gray-800 p-4 text-white">
       {/* Title */}
       <h2 className="text-xl font-bold mb-4">Chat</h2>
 
