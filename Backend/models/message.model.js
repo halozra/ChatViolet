@@ -2,18 +2,19 @@ import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
   {
-    idChatRoom: {
-      type: String,
+    IdChatRoom: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Chat",
       required: true,
     },
     sender: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String, // ID User pengirim (pakai String biar sama kayak Chat model-mu)
       required: true,
     },
-    text: { type: String, default: "" },
-    media: { type: String, default: "" },
+    content: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

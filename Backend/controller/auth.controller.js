@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.js";
+import User from "../models/user.model.js";
 import dotenv from "dotenv";
 
 // Load environment variables dari file .env
