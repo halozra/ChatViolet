@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.post("/", verifyToken, createChat);
 
-router.get("/", verifyToken, getUserChats);
+router.get("/getChatAllRoom", verifyToken, getUserChats);
 
-router.get("/", verifyToken, getChatById);
+router.get("/getChatById", verifyToken, getChatById);
 
 export default router;
