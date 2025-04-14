@@ -8,6 +8,7 @@ const key = process.env.HASH_SECRET_KEY;
 const userSchema = new mongoose.Schema(
   {
     fullName: { type: String, required: true },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     sex: { type: String, default: "" },
     phone: { type: String, default: "" },
     email: { type: String, required: true, unique: true },

@@ -1,5 +1,6 @@
 import Chat from "../models/chat.model.js";
 import Message from "../models/message.model.js";
+import User from "../models/user.model.js";
 
 /**
  * 🔹 CREATE OR GET CHAT
@@ -62,3 +63,58 @@ export const getUserChats = async (req, res) => {
     });
   }
 };
+
+export const getFriend = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (!username) {
+      return res
+        .status(400)
+        .json({ message: "Username is required in request body" });
+    }
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user); // Atau kirim field tertentu misalnya: res.json({ username: user.username, ... })
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const addFriend = async (req, res) => {
+  try {
+    const { friend } = req.body;
+
+    // Temukan user yang mau ditambahkan sebagai teman
+    const targetUser = await User.findOne({ username: friend });
+    if (!targetUser) {
+      return res.status(404).json({ message: "Username not found" });
+    }
+
+    // Temukan user yang sedang login
+    const currentUser = await User.findById(req.user.id);
+    if (!currentUser) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Cek apakah sudah berteman
+    if (currentUser.friends.includes(targetUser._id)) {
+      return res.status(400).json({ message: "Already a friend" });
+    }
+
+    // Tambahkan ke daftar teman
+    currentUser.friends.push(targetUser._id);
+    await currentUser.save();
+
+    res.status(200).json({ message: "Friend added successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
