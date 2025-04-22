@@ -28,7 +28,7 @@ ChatApp Violet adalah aplikasi chat real-time yang dibangun menggunakan MERN Sta
 ### 2. Install Dependencies
 #### Backend:
 ```sh
-  cd server
+  cd backend
   npm install
 ```
 #### Frontend:
