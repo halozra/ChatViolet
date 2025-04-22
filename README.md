@@ -50,12 +50,12 @@ CLIENT_URL=http://localhost:3000
 #### Backend:
 ```sh
   cd server
-  npm start
+  npm run dev
 ```
 #### Frontend:
 ```sh
-  cd client
-  npm start
+  cd frontend
+  npm run dev
 ```
 Akses aplikasi di `http://localhost:3000`
 
