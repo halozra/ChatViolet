@@ -19,7 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/chats", chatRoutes);
-
+app.get("/",(req,res)=>{
+  res.send("Server is running")
+})
 // Connect to MongoDB
 
 // Start server

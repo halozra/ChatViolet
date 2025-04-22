@@ -1,18 +1,20 @@
-import express from "express";
-import verifyToken from "../middleware/jwt.js";
+import express from 'express'
+import verifyToken from '../middleware/jwt.js'
 import {
   addFriend,
   createChat,
-  getFriend,
+  searchFriend,
+  ListFriend,
   getUserChats,
-} from "../controller/chat.controller.js";
+} from '../controller/chat.controller.js'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/", verifyToken, createChat);
-router.post("/addFriend",verifyToken,addFriend)
+router.post('/create', verifyToken, createChat)
+router.post('/addFriend', verifyToken, addFriend)
 
-router.get("/getChatAllRoom", verifyToken, getUserChats);
-router.get("/getFriend", verifyToken, getFriend);
+router.get('/getChatAllRoom', verifyToken, getUserChats)
+router.get('/search', verifyToken, searchFriend)
+router.get('/listFriend', verifyToken, ListFriend)
 
-export default router;
+export default router
