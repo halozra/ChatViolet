@@ -1,46 +1,59 @@
-"use client";
-
-import axios from "axios";
-import React, { useState } from "react";
+import { useState } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 interface LoginProps {
-  setIsLogin: (value: boolean) => void;
+  setIsLogin: (value: boolean) => void
 }
 
-export default function Login({ setIsLogin }: LoginProps) {
+const Login = ({ setIsLogin }: LoginProps) => {
+  const router = useRouter()
+
   interface Credentials {
-    username: string;
-    password: string;
+    username: string
+    password: string
   }
 
   const [formData, setFormData] = useState<Credentials>({
-    username: "",
-    password: "",
-  });
+    username: '',
+    password: '',
+  })
+
+  const [loading, setLoading] = useState(false) // Tambahkan loading state
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
+
+    if (!formData.username || !formData.password) {
+      alert('Please fill in both username and password.')
+      return
+    }
+
+    setLoading(true) // Aktifkan loading saat login dimulai
+
     try {
       const respon = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        'http://localhost:5000/api/auth/login',
         formData
-      );
-      const token = respon.data.token;
-      localStorage.setItem("token", token);
-      alert("Login successful!");
-      console.log("token:", token);
+      )
+      const token = respon.data.token
+      localStorage.setItem('token', token)
+      alert('Login successful!')
+      router.push('/')
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
-        alert(error.response.data.message);
+        alert(error.response.data.message)
       } else {
-        alert("An unexpected error occurred");
+        alert('An unexpected error occurred')
       }
+    } finally {
+      setLoading(false) // Matikan loading setelah proses selesai
     }
-  };
+  }
 
   return (
     <div className="bg-gray-600 rounded-xl w-80 h-80 flex justify-center items-center shadow-lg shadow-black p-6">
@@ -71,12 +84,13 @@ export default function Login({ setIsLogin }: LoginProps) {
         <button
           type="submit"
           className="mt-6 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-all duration-200"
+          disabled={loading} // Disable tombol saat loading
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
 
         <p className="mt-4 text-sm">
-          Don't have an account?
+          Don't have an account?{' '}
           <span
             className="text-blue-500 cursor-pointer hover:underline ml-1"
             onClick={() => setIsLogin(false)}
@@ -86,5 +100,7 @@ export default function Login({ setIsLogin }: LoginProps) {
         </p>
       </form>
     </div>
-  );
+  )
 }
+
+export default Login
